@@ -1,7 +1,7 @@
 version: '3'
 services:
   elasticsearch:
-    image: "elasticsearch:5"
+    image: "docker.elastic.co/elasticsearch/elasticsearch:7.10.0"
     networks:
       - frontend
     restart: always
@@ -14,9 +14,10 @@ services:
     healthcheck:
       test: ["CMD", "curl","-s" ,"-f", "http://localhost:9200/_cat/health"]
       retries: 6
-
+    ports:
+      - "9200:9200"
   hacker:
-    image: "dineshsonachalam/hacker:1.0.0"
+    build: .
     networks:
       - frontend
     restart: always

@@ -186,6 +186,7 @@
                                   <div class="mb-4 mb-md-0 mr-5">
                                     <div class="job-post-item-header d-flex align-items-center">
                                       <h2 class="mr-3 text-black h3">{{ hit['_source']['title'] }}</h2>
+                                      <h4 class="mr-3 text-black h4">{{ hit['_source']['description'] }}</h4>
                                         <div class="badge-wrap">
                                           {% for label in  hit['_source']['labels']  %}
                                             <span class="bg-secondary text-white badge py-2 px-3">{{label}}</span>
@@ -280,13 +281,12 @@
               console.log(response);
               var obj = JSON.parse(response);
               console.log("Object:",obj);
-              var data = obj.autocomplete;
+              var data = obj.hits.hits;
               console.log("Data:",data);
               console.log(data.length);
-              title_data = data[0]["options"];
               titles = []
-              for(var i=0;i<title_data.length;i++){
-                titles.push(title_data[i]["text"]);
+              for(var i=0;i<data.length;i++){
+                titles.push(data[i]['_source']["title"]);
               }
               console.log(titles);
               $("#user_input").autocomplete({
@@ -296,19 +296,6 @@
 
             });
       });
-
-      // drag to tutorial_list division
-
-      if({{ res['hits']['total'] }}>0){
-            $('html, body').animate({
-                scrollTop: $("#tutorial_section").offset().top
-            }, 2000);
-            console.log("Called here")
-      }
-
-
-
-
 
  </script>
 

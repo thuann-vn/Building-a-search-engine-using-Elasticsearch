@@ -28,7 +28,7 @@ def index():
                     "query_string": {
                         "analyze_wildcard": True,
                         "query": str(search_term),
-                        "fields": ["topic", "title", "url", "labels"]
+                        "fields": ["title", "description", "url", "paragraph"]
                     }
                 },
                 "size": 50,
@@ -37,7 +37,7 @@ def index():
                 ]
             }
             payload = json.dumps(payload)
-            url = "http://elasticsearch:9200/hacker/tutorials/_search"
+            url = "http://elasticsearch:9200/100_vanban/_search"
             response = requests.request("GET", url, data=payload, headers=headers)
             response_dict_data = json.loads(str(response.text))
             return render_template('index.html', res=response_dict_data)
@@ -49,17 +49,8 @@ def autocomplete():
         search_term = request.form["input"]
         print("POST request called")
         print(search_term)
-        payload ={
-          "autocomplete" : {
-            "text" : str(search_term),
-            "completion" : {
-              "field" : "title_suggest"
-            }
-          }
-        }
-        payload = json.dumps(payload)
-        url="http://elasticsearch:9200/autocomplete/_suggest"
-        response = requests.request("GET", url, data=payload, headers=headers)
+        url="http://elasticsearch:9200/100_vanban/_search?q=" + str(search_term)
+        response = requests.request("GET", url, headers=headers)
         response_dict_data = json.loads(str(response.text))
         return json.dumps(response_dict_data)
 
